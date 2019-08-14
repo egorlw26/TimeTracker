@@ -1,46 +1,44 @@
 #include "activity.h"
 
 Activity::Activity() :
-    duration(0), status(static_cast<int>(Status::Paused))
+    m_duration(0), m_status(static_cast<int>(Status::Paused))
 {
-    start = clock();
+    m_start = clock();
 }
 
-Activity::Activity(QString name) :
-    name(name), duration(0), status(static_cast<int>(Status::Paused))
+Activity::Activity(QString i_name) :
+    m_name(i_name), m_duration(0), m_status(static_cast<int>(Status::Paused))
 {
-    start = clock();
+    m_start = clock();
 }
 
-Activity::Activity(QString name, double duration):
-    name(name), duration(duration), status(static_cast<int>(Status::Paused))
+Activity::Activity(QString i_name, double i_duration):
+    m_name(i_name), m_duration(i_duration), m_status(static_cast<int>(Status::Paused))
 {
 
 }
 
 int Activity::getStatus()
 {
-    return status;
+    return m_status;
 }
 
-void Activity::setStatus(int nStatus)
+void Activity::setStatus(int i_status)
 {
-    status = nStatus;
+    m_status = i_status;
 }
 
 void Activity::update()
 {
-    if(status == static_cast<int>(Status::Started))
+    if(m_status == static_cast<int>(Status::Started))
     {
-        duration += (double(clock() - start))/static_cast<double>(CLOCKS_PER_SEC);
-        start = clock();
+        m_duration += (double(clock() - m_start))/static_cast<double>(CLOCKS_PER_SEC);
+        m_start = clock();
     }
-    if(status == static_cast<int>(Status::Finished))
+    if(m_status == static_cast<int>(Status::Finished))
     {
-        duration = 0;
+        m_duration = 0;
     }
-    if(status == static_cast<int>(Status::Paused))
-    {
-
-    }
+    if(m_status == static_cast<int>(Status::Paused))
+    { }
 }

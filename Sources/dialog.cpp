@@ -3,14 +3,14 @@
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Dialog)
+    mp_ui(new Ui::Dialog)
 {
-    ui->setupUi(this);
+    mp_ui->setupUi(this);
 }
 
 Dialog::~Dialog()
 {
-    delete ui;
+    delete mp_ui;
 }
 
 
@@ -21,10 +21,11 @@ void Dialog::on_CancelButton_clicked()
 
 void Dialog::on_OkButton_clicked()
 {
-    if(ui->InputLine->text() != "")
+    if(mp_ui->InputLine->text() != "")
     {
-        QString actName = ui->InputLine->text();
-        (*mw).getTracker().addActivity(Activity(actName));
+        QString actName = mp_ui->InputLine->text();
+        (*mp_mw).getTracker().addActivity(Activity(actName));
         Dialog::close();
     }
 }
+

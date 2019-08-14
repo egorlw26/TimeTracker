@@ -8,9 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(Tick()));
-    timer->start(10);
+    mp_timer = new QTimer(this);
+    connect(mp_timer, SIGNAL(timeout()), this, SLOT(Tick()));
+//    connect(ui->AddButton, &QAbstractButton::clicked, this, &MainWindow::Create);
+    mp_timer->start(50);
     needToRefreshNames = false;
 }
 
@@ -24,12 +25,12 @@ void MainWindow::Tick()
             if(needToRefreshNames)
                 ui->ListNames->clear();
             ui->ListTimes->clear();
-            for(int i = 0; i < tracker.getActivities().size(); ++i)
+            for(int i = 0; i < m_tracker.getActivities().size(); ++i)
             {
                 if(needToRefreshNames)
-                    ui->ListNames->addItem(tracker.getActivities()[i].getName());
-                tracker.getActivities()[i].update();
-                int time = static_cast<int>(tracker.getActivities()[i].getDuration());
+                    ui->ListNames->addItem(m_tracker.getActivities()[i].getName());
+                m_tracker.getActivities()[i].update();
+                int time = static_cast<int>(m_tracker.getActivities()[i].getDuration());
                 int hours, minutes, seconds;
                 hours = time/3600;
                 minutes = (time - hours*3600)/60;
@@ -50,23 +51,23 @@ void MainWindow::on_AddButton_clicked()
 
 void MainWindow::on_StopButton_clicked()
 {
-     for(int i = 0; i < tracker.getActivities().size(); ++i)
+     for(int i = 0; i < m_tracker.getActivities().size(); ++i)
      {
         if(ui->ListNames->item(i)->isSelected())
         {
-            tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Paused));
+            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Paused));
         }
      }
 }
 
 void MainWindow::on_StartButton_clicked()
 {
-    for(int i = 0; i<tracker.getActivities().size(); ++i)
+    for(int i = 0; i<m_tracker.getActivities().size(); ++i)
     {
         if(ui->ListNames->item(i)->isSelected())
         {
-            tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Started));
-            tracker.getActivities()[i].setStartNow();
+            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Started));
+            m_tracker.getActivities()[i].setStartNow();
         }
     }
 }
@@ -74,22 +75,22 @@ void MainWindow::on_StartButton_clicked()
 void MainWindow::on_Finish_Button_clicked()
 {
 
-    for(int i = 0; i<tracker.getActivities().size(); ++i)
+    for(int i = 0; i<m_tracker.getActivities().size(); ++i)
     {
         if(ui->ListNames->item(i)->isSelected())
         {
-            tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Finished));
+            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Finished));
         }
     }
 }
 
 void MainWindow::on_RemoveButton_clicked()
 {
-    for (int i = 0; i<tracker.getActivities().size(); ++i)
+    for (int i = 0; i<m_tracker.getActivities().size(); ++i)
     {
         if(ui->ListNames->item(i)->isSelected())
         {
-            tracker.getActivities().erase(tracker.getActivities().begin() + i);
+            m_tracker.getActivities().erase(m_tracker.getActivities().begin() + i);
         }
     }
     needToRefreshNames = true;
@@ -100,9 +101,9 @@ void MainWindow::on_actionSave_triggered()
     std::ofstream out("Log.txt");
     if(out.is_open())
     {
-        out<<tracker.getActivities().size()<<'\n';
-        for(int i = 0 ; i < tracker.getActivities().size(); ++i)
-            out<<tracker.getActivities()[i].getName().toUtf8().constData()<<' '<<tracker.getActivities()[i].getDuration()<<'\n';
+        out<<m_tracker.getActivities().size()<<'\n';
+        for(int i = 0 ; i < m_tracker.getActivities().size(); ++i)
+            out<<m_tracker.getActivities()[i].getName().toUtf8().constData()<<' '<<m_tracker.getActivities()[i].getDuration()<<'\n';
     }
 }
 
@@ -121,7 +122,7 @@ void MainWindow::on_actionLoad_triggered()
             in>>name;
             in>>line;
             dur = std::stod(line);
-            tracker.addActivity(Activity(QString::fromUtf8(name.c_str()), dur));
+            m_tracker.addActivity(Activity(QString::fromUtf8(name.c_str()), dur));
         }
         needToRefreshNames = true;
     }

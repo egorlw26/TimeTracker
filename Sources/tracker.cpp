@@ -5,7 +5,7 @@ Tracker::Tracker()
 
 }
 
-void Tracker::addActivity(const Activity &activity)
+void Tracker::addActivity(const Activity &i_activity)
 {
-    m_activities.push_back(activity);
+    m_activities.push_back(i_activity);
 }
