@@ -3,27 +3,31 @@
 
 #include <string>
 #include <QString>
-#include <thread>
 #include <chrono>
 
 class Activity
 {
 public:
+    enum class Status : int
+    {
+        Finished = -1,
+        Paused = 0,
+        Started = 1
+    };
     Activity();
-    Activity(std::string name);
-    Activity(std::string name, double duration);
+    Activity(QString name);
+    Activity(QString name, double duration);
     int getStatus();
-    QString getQStringName();
     double getDuration() {return duration;}
-    std::string getName() {return name;}
+    QString getName() {return name;}
     void setStatus(int nStatus);
     void setStartNow() {start = clock();}
     void update();
 private:
     void addSecond();
-    std::string name;
-    int status;
+    QString name;
     double duration;
+    int status;
     clock_t start;
 };
 

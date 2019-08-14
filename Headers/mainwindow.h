@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "tracker.h"
-#include "thread"
 #include "chrono"
 #include "QtCore"
 

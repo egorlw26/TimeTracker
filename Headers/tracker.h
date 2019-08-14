@@ -2,17 +2,16 @@
 #define TRACKER_H
 
 #include "activity.h"
-#include <vector>
-#include <thread>
+#include <QVector>
 
 class Tracker
 {
 public:
     Tracker();
     void addActivity(const Activity& activity);
-    std::vector<Activity>& getActivities() {return m_activities;}
+    QVector<Activity>& getActivities() {return m_activities;}
 private:
-    std::vector<Activity> m_activities;
+    QVector<Activity> m_activities;
 };
 
 #endif // TRACKER_H
