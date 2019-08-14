@@ -17,10 +17,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    Tracker& getTracker() {return tracker;}
+    Tracker& getTracker() {return m_tracker;}
 
 private slots:
     void Tick();
+
+    void Create(){};
 
     void on_AddButton_clicked();
 
@@ -39,8 +41,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 private:
-    Tracker tracker;
-    QTimer *timer;
+    Tracker m_tracker;
+    QTimer* mp_timer;
     bool needToRefreshNames;
 };
 

@@ -8,7 +8,7 @@ class Tracker
 {
 public:
     Tracker();
-    void addActivity(const Activity& activity);
+    void addActivity(const Activity& i_activity);
     QVector<Activity>& getActivities() {return m_activities;}
 private:
     QVector<Activity> m_activities;

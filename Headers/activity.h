@@ -18,17 +18,19 @@ public:
     Activity(QString name);
     Activity(QString name, double duration);
     int getStatus();
-    double getDuration() {return duration;}
-    QString getName() {return name;}
+    double getDuration() {return m_duration;}
+    QString getName() {return m_name;}
     void setStatus(int nStatus);
-    void setStartNow() {start = clock();}
+    void setStartNow() {m_start = clock();}
     void update();
 private:
     void addSecond();
-    QString name;
-    double duration;
-    int status;
-    clock_t start;
+
+private:
+    QString m_name;
+    double m_duration;
+    int m_status;
+    clock_t m_start;
 };
 
 #endif // ACTIVITY_H

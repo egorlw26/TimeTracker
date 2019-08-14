@@ -17,15 +17,15 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
-    void setMainWindow(MainWindow *mw) {this->mw = mw;}
+    void setMainWindow(MainWindow* ip_mw) {this->mp_mw = ip_mw;}
 
 private slots:
     void on_CancelButton_clicked();
     void on_OkButton_clicked();
 
 private:
-    Ui::Dialog *ui;
-    MainWindow *mw;
+    Ui::Dialog* mp_ui;
+    MainWindow* mp_mw;
 };
 
 #endif // DIALOG_H
