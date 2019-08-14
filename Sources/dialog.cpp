@@ -24,8 +24,7 @@ void Dialog::on_OkButton_clicked()
     if(ui->InputLine->text() != "")
     {
         QString actName = ui->InputLine->text();
-        std::string aName = actName.toLocal8Bit().constData();
-        (*mw).getTracker().addActivity(Activity(aName));
+        (*mw).getTracker().addActivity(Activity(actName));
         Dialog::close();
     }
 }
