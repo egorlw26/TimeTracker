@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>240</height>
+    <width>427</width>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,7 +78,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="Finish_Button">
+       <widget class="QPushButton" name="RestartButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -90,6 +90,19 @@
           <width>51</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="text">
+         <string>Restart</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="FinishButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
          <string>Finish</string>
@@ -123,7 +136,7 @@
        <widget class="QListWidget" name="ListNames">
         <property name="maximumSize">
          <size>
-          <width>211</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -139,9 +152,19 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>200</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="ListStatuses">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
@@ -154,7 +177,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>350</width>
+     <width>427</width>
      <height>20</height>
     </rect>
    </property>
@@ -166,15 +189,6 @@
     <addaction name="actionLoad"/>
    </widget>
    <addaction name="menuFile"/>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSave">
