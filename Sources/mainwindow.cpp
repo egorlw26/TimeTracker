@@ -5,14 +5,19 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    needToRefreshNames(false),
+    needToRefreshStatuses(false)
 {
     ui->setupUi(this);
     mp_timer = new QTimer(this);
     connect(mp_timer, SIGNAL(timeout()), this, SLOT(Tick()));
-//    connect(ui->AddButton, &QAbstractButton::clicked, this, &MainWindow::Create);
+    connect(ui->StopButton, &QAbstractButton::clicked, this, &MainWindow::PauseActivity);
+    connect(ui->StartButton, &QAbstractButton::clicked, this, &MainWindow::StartActivity);
+    connect(ui->RestartButton, &QAbstractButton::clicked, this, &MainWindow::RestartActivity);
+    connect(ui->RemoveButton, &QAbstractButton::clicked, this, &MainWindow::RemoveActivity);
+    connect(ui->FinishButton, &QAbstractButton::clicked, this, &MainWindow::FinishActivity);
     mp_timer->start(50);
-    needToRefreshNames = false;
 }
 
 MainWindow::~MainWindow()
@@ -24,11 +29,15 @@ void MainWindow::Tick()
 {
             if(needToRefreshNames)
                 ui->ListNames->clear();
+            if(needToRefreshStatuses)
+                ui->ListStatuses->clear();
             ui->ListTimes->clear();
             for(int i = 0; i < m_tracker.getActivities().size(); ++i)
             {
                 if(needToRefreshNames)
                     ui->ListNames->addItem(m_tracker.getActivities()[i].getName());
+                if(needToRefreshStatuses)
+                     ui->ListStatuses->addItem(m_tracker.getActivities()[i].getStatusText());
                 m_tracker.getActivities()[i].update();
                 int time = static_cast<int>(m_tracker.getActivities()[i].getDuration());
                 int hours, minutes, seconds;
@@ -39,28 +48,15 @@ void MainWindow::Tick()
                 ui->ListTimes->addItem(info);
             }
             needToRefreshNames = false;
+            needToRefreshStatuses = false;
 }
 
-void MainWindow::on_AddButton_clicked()
+void MainWindow::CreateActivity(QString i_name)
 {
-    Dialog d;
-    d.setMainWindow(this);
-    d.exec();
-    needToRefreshNames = true;
+    m_tracker.addActivity(i_name);
 }
 
-void MainWindow::on_StopButton_clicked()
-{
-     for(int i = 0; i < m_tracker.getActivities().size(); ++i)
-     {
-        if(ui->ListNames->item(i)->isSelected())
-        {
-            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Paused));
-        }
-     }
-}
-
-void MainWindow::on_StartButton_clicked()
+void MainWindow::StartActivity()
 {
     for(int i = 0; i<m_tracker.getActivities().size(); ++i)
     {
@@ -70,23 +66,36 @@ void MainWindow::on_StartButton_clicked()
             m_tracker.getActivities()[i].setStartNow();
         }
     }
+    needToRefreshStatuses = true;
 }
 
-void MainWindow::on_Finish_Button_clicked()
+void MainWindow::PauseActivity()
 {
+    for(int i = 0; i < m_tracker.getActivities().size(); ++i)
+    {
+       if(ui->ListNames->item(i)->isSelected())
+       {
+           m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Paused));
+       }
+    }
+    needToRefreshStatuses = true;
+}
 
+void MainWindow::RestartActivity()
+{
     for(int i = 0; i<m_tracker.getActivities().size(); ++i)
     {
         if(ui->ListNames->item(i)->isSelected())
         {
-            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Finished));
+            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Restarted));
         }
     }
+    needToRefreshStatuses = true;
 }
 
-void MainWindow::on_RemoveButton_clicked()
+void MainWindow::RemoveActivity()
 {
-    for (int i = 0; i<m_tracker.getActivities().size(); ++i)
+    for(int i = 0; i<m_tracker.getActivities().size(); ++i)
     {
         if(ui->ListNames->item(i)->isSelected())
         {
@@ -94,36 +103,37 @@ void MainWindow::on_RemoveButton_clicked()
         }
     }
     needToRefreshNames = true;
+    needToRefreshStatuses = true;
 }
+
+void MainWindow::FinishActivity()
+{
+    for(int i = 0; i<m_tracker.getActivities().size(); ++i)
+    {
+        if(ui->ListNames->item(i)->isSelected())
+        {
+            m_tracker.getActivities()[i].setStatus(static_cast<int>(Activity::Status::Finished));
+        }
+    }
+    needToRefreshStatuses = true;
+}
+
+void MainWindow::on_AddButton_clicked()
+{
+    Dialog d(this);
+    d.exec();
+    needToRefreshNames = true;
+}
+
 
 void MainWindow::on_actionSave_triggered()
 {
-    std::ofstream out("Log.txt");
-    if(out.is_open())
-    {
-        out<<m_tracker.getActivities().size()<<'\n';
-        for(int i = 0 ; i < m_tracker.getActivities().size(); ++i)
-            out<<m_tracker.getActivities()[i].getName().toUtf8().constData()<<' '<<m_tracker.getActivities()[i].getDuration()<<'\n';
-    }
+    m_tracker.saveTracker();
 }
 
 void MainWindow::on_actionLoad_triggered()
 {
-    std::ifstream in("Log.txt");
-    if(in.is_open())
-    {
-        std::string line;
-        std::getline(in, line);
-        int size = std::stoi(line);
-        for(size_t i = 0; i < static_cast<size_t>(size); ++i)
-        {
-            std::string name;
-            double dur;
-            in>>name;
-            in>>line;
-            dur = std::stod(line);
-            m_tracker.addActivity(Activity(QString::fromUtf8(name.c_str()), dur));
-        }
-        needToRefreshNames = true;
-    }
+    m_tracker.loadTracker();
+    needToRefreshNames = true;
+    needToRefreshStatuses = true;
 }

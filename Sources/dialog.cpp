@@ -1,9 +1,10 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 
-Dialog::Dialog(QWidget *parent) :
+Dialog::Dialog(QWidget *parent, MainWindow* main_window) :
     QDialog(parent),
-    mp_ui(new Ui::Dialog)
+    mp_ui(new Ui::Dialog),
+    mp_mw(main_window)
 {
     mp_ui->setupUi(this);
 }
@@ -23,9 +24,8 @@ void Dialog::on_OkButton_clicked()
 {
     if(mp_ui->InputLine->text() != "")
     {
-        QString actName = mp_ui->InputLine->text();
-        (*mp_mw).getTracker().addActivity(Activity(actName));
-        Dialog::close();
+
     }
+    Dialog::close();
 }
 
