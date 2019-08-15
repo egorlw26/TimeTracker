@@ -13,8 +13,7 @@ void Tracker::addActivity(const Activity &i_activity)
 
 void Tracker::addActivity(QString i_name)
 {
-    if(i_name != "")
-        m_activities.push_back(Activity(i_name));
+    m_activities.push_back(Activity(i_name));
 }
 
 void Tracker::saveTracker()

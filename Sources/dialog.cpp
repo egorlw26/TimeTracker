@@ -1,12 +1,13 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 
-Dialog::Dialog(QWidget *parent, MainWindow* main_window) :
+Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
-    mp_ui(new Ui::Dialog),
-    mp_mw(main_window)
+    mp_ui(new Ui::Dialog)
 {
     mp_ui->setupUi(this);
+    connect(mp_ui->OkButton, &QAbstractButton::clicked, this, &QDialog::accept);
+    connect(mp_ui->CancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
 }
 
 Dialog::~Dialog()
@@ -14,18 +15,8 @@ Dialog::~Dialog()
     delete mp_ui;
 }
 
-
-void Dialog::on_CancelButton_clicked()
+QString Dialog::name() const
 {
-    Dialog::close();
-}
-
-void Dialog::on_OkButton_clicked()
-{
-    if(mp_ui->InputLine->text() != "")
-    {
-
-    }
-    Dialog::close();
+    return mp_ui->InputLine->text();
 }
 

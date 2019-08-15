@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->RestartButton, &QAbstractButton::clicked, this, &MainWindow::RestartActivity);
     connect(ui->RemoveButton, &QAbstractButton::clicked, this, &MainWindow::RemoveActivity);
     connect(ui->FinishButton, &QAbstractButton::clicked, this, &MainWindow::FinishActivity);
+    connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::LoadInfo);
+    connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveInfo);
     mp_timer->start(50);
 }
 
@@ -118,22 +120,27 @@ void MainWindow::FinishActivity()
     needToRefreshStatuses = true;
 }
 
-void MainWindow::on_AddButton_clicked()
-{
-    Dialog d(this);
-    d.exec();
-    needToRefreshNames = true;
-}
-
-
-void MainWindow::on_actionSave_triggered()
+void MainWindow::SaveInfo()
 {
     m_tracker.saveTracker();
 }
 
-void MainWindow::on_actionLoad_triggered()
+void MainWindow::LoadInfo()
 {
     m_tracker.loadTracker();
     needToRefreshNames = true;
     needToRefreshStatuses = true;
 }
+
+void MainWindow::on_AddButton_clicked()
+{
+    Dialog d;
+    if(d.exec())
+    {
+        CreateActivity(d.name());
+        needToRefreshNames = true;
+        needToRefreshStatuses = true;
+    }
+}
+
+
