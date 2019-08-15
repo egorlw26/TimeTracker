@@ -9,7 +9,10 @@ class Tracker
 public:
     Tracker();
     void addActivity(const Activity& i_activity);
+    void addActivity(QString i_name);
     QVector<Activity>& getActivities() {return m_activities;}
+    void saveTracker();
+    void loadTracker();
 private:
     QVector<Activity> m_activities;
 };

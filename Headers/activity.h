@@ -10,18 +10,21 @@ class Activity
 public:
     enum class Status : int
     {
-        Finished = -1,
+        Restarted = -1,
         Paused = 0,
-        Started = 1
+        Started = 1,
+        Finished = 2
     };
     Activity();
     Activity(QString name);
     Activity(QString name, double duration);
+    Activity(QString name, double duration, int status);
     int getStatus();
-    double getDuration() {return m_duration;}
-    QString getName() {return m_name;}
+    double getDuration();
+    QString getName();
+    QString getStatusText();
     void setStatus(int nStatus);
-    void setStartNow() {m_start = clock();}
+    void setStartNow();
     void update();
 private:
     void addSecond();

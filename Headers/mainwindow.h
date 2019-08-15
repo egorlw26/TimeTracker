@@ -19,20 +19,22 @@ public:
     ~MainWindow();
     Tracker& getTracker() {return m_tracker;}
 
-private slots:
+public slots:
     void Tick();
 
-    void Create(){};
+    void CreateActivity(const QString i_name);
+
+    void StartActivity();
+
+    void PauseActivity();
+
+    void RestartActivity();
+
+    void RemoveActivity();
+
+    void FinishActivity();
 
     void on_AddButton_clicked();
-
-    void on_StopButton_clicked();
-
-    void on_StartButton_clicked();
-
-    void on_Finish_Button_clicked();
-
-    void on_RemoveButton_clicked();
 
     void on_actionSave_triggered();
 
@@ -44,6 +46,7 @@ private:
     Tracker m_tracker;
     QTimer* mp_timer;
     bool needToRefreshNames;
+    bool needToRefreshStatuses;
 };
 
 #endif // MAINWINDOW_H

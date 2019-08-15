@@ -2,9 +2,9 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <string>
 #include "activity.h"
 #include "mainwindow.h"
-#include <string>
 
 namespace Ui {
 class Dialog;
@@ -15,9 +15,11 @@ class Dialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit Dialog(QWidget *parent = nullptr);
+    explicit Dialog(QWidget *parent = nullptr, MainWindow* main_window = nullptr);
     ~Dialog();
-    void setMainWindow(MainWindow* ip_mw) {this->mp_mw = ip_mw;}
+
+signals:
+    void AddNewActivity(QString i_name);
 
 private slots:
     void on_CancelButton_clicked();
