@@ -34,11 +34,12 @@ public slots:
 
     void FinishActivity();
 
+    void SaveInfo();
+
+    void LoadInfo();
+
     void on_AddButton_clicked();
 
-    void on_actionSave_triggered();
-
-    void on_actionLoad_triggered();
 
 private:
     Ui::MainWindow *ui;
